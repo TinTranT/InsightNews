@@ -1,0 +1,162 @@
+<header class="header">
+    <div class="first-bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-12">
+                    <div class="logo">
+                        <a href="/" class="d-flex align-items-center">
+                            <img src="/imgs/newspaper.png" alt="newspaper" width="100px" height="100px">
+                            <div class="title">
+                                <h5><strong>Insight</strong>News</h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="search">
+                        <form class="d-flex align-items-center" role="search" action="/news/search" method="get">
+                            <input class="form-control me-2" type="search" placeholder="Type something here"
+                                aria-label="Search" name="keyword">
+                            <button class="btn btn-outline-success" type="submit">
+                                <i class="bi bi-search "></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12 ">
+                    <ul class="navbar-nav sign">
+                        {{#if auth}}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Hello, <b>{{authUser.Name}}</b>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {{#if (isEqual authUser.Role 2)}}
+                                <a class="dropdown-item" href="/reporter">
+                                    <i class="bi bi-menu-button-wide"></i>
+                                    Reporter Panel
+                                </a>
+                                {{else if (isEqual authUser.Role 3)}}
+                                <a class="dropdown-item" href="/editor">
+                                    <i class="bi bi-menu-button-wide"></i>
+                                    Editor Panel
+                                </a>
+                                {{else if (isEqual authUser.Role 4)}}
+                                <a class="dropdown-item" href="/admin">
+                                    <i class="bi bi-menu-button-wide"></i>
+                                    Admin Panel
+                                </a>
+                                {{/if}}
+                                <a class="dropdown-item" href="/account/profile">
+                                    <i class="bi bi-person"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="/account/update-password">
+                                    <i class="bi bi-gear"></i>
+                                    Change password
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <form action="/account/logout" method="post" id="frmLogout"></form>
+                                <a class="dropdown-item" href="#" id="logoutLink">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    Sign out
+                                </a>
+                            </ul>
+                        </li>
+                        {{else}}
+                        <li class="nav-item firstli">
+                            <a class="nav-link" href="/account/register">
+                                <i class="bi bi-person-plus-fill"></i>
+                                Register
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/account/login">
+                                <i class="bi bi-person-fill"></i>
+                                Login
+                            </a>
+                        </li>
+                        {{/if}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-lg menu">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item scroll-action">
+                        <a class="nav-link d-flex align-items-center" aria-current="page" href="/">
+                            <img src="/imgs/newspaper.png" alt="newspaper" width="25px" height="25px"
+                                style="margin-right: 5px;">
+                            <div class="title">
+                                <h5 style="margin: 0; color: var(--color-red);"><strong
+                                        style="color: var(--color-black); margin-right: 5px;">Insight</strong>News</h5>
+                            </div>
+                        </a>
+                    </li>
+                    {{#each lcCategories}}
+                    {{#if @index}}
+                    {{#if (and (greater @index 0) (lower @index 8))}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <b>{{catParentName}}</b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {{#each catChildren}}
+                            <li><a class="dropdown-item" href="/news/byCat?id={{this.[0]}}">{{this.[1]}}</a></li>
+                            {{/each}}
+                        </ul>
+                    </li>
+                    {{/if}}
+                    {{/if}}
+                    {{/each}}
+                    {{!-- <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li> --}}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle drop-parent" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false" data-bs-auto-close="outside">
+                            <b>More</b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {{#each lcCategories}}
+                            {{#if @index}}
+                            {{#if (and (greater @index 7) (lower @index 10000))}}
+                            <li class="dropdown-submenu dropend more">
+                                <a class="dropdown-item dropdown-toggle " href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">{{catParentName}}</a>
+                                <ul class="dropdown-menu">
+                                    {{#each catChildren}}
+                                    <li><a class="dropdown-item drop-child"
+                                            href="/news/byCat?id={{this.[0]}}">{{this.[1]}}</a></li>
+                                    {{/each}}
+                                </ul>
+                            </li>
+                            {{else}}
+                            {{/if}}
+                            {{/if}}
+                            {{/each}}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

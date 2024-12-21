@@ -1,0 +1,128 @@
+{{#section 'css'}}
+<style>
+    .profile-page {
+        font-size: 1.2rem;
+    }
+
+    .profile-page .card-body {
+        font-size: 1.1rem;
+    }
+
+    .profile-page .btn {
+        font-size: 1.2rem;
+        padding: 10px 20px;
+    }
+
+    .profile-page .mb-0 {
+        font-size: 1.8rem;
+        margin: 10px 0;
+    }
+</style>
+{{/section}}
+{{#section 'js'}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var dobInput = document.getElementById('dobInput');
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        var yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;
+        if (dobInput.value === "1899-11-30" || !dobInput.value) {
+            dobInput.value = today;
+        }
+        dobInput.setAttribute('max', today);
+    });
+</script>
+{{/section}}
+
+<div class="profile-page">
+    <form action="" method="post" id="frmUpdate">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img src="https://cdn-icons-png.flaticon.com/512/648/648270.png" alt="avatar"
+                                class="rounded-circle img-fluid" style="width: 150px;">
+                            <h2 class="my-3">{{user.Name}}</h2>
+                            {{#if user.SubcribeExpireDate}}
+                            {{#if (isExpired user.SubcribeExpireDate)}}
+                            <h4 class="text-muted my-4">Your Premium has expired</h4>
+                            {{else}}<h4 class="text-muted my-4">Premium expiration date:</h4>
+                            <h4 class="text-muted my-4">{{formatDate2 user.SubcribeExpireDate}}
+                            </h4>
+                            {{/if}}
+                            <div class="d-flex justify-content-center mb-2">
+                                <a href="#" class="btn btn-danger btn-lg btn-block">Expand your PREMIUM right now!!!</a>
+                            </div>
+                            {{else}}
+                            <div class="d-flex justify-content-center mb-2">
+                                <a href="#" class="btn btn-danger btn-lg btn-block">Get PREMIUM right now!!!</a>
+                            </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Email</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{user.Email}}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Full Name</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" value="{{user.Name}}" name="name" required>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Date of Birth</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="date" id="dobInput" class="form-control" value="{{formatDate3
+                                        user.Dob}}" name="dob" min="1900-01-01" required>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Pen Name</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" value="{{user.PenName}}" name="penname">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Role</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0">{{nameRole user.Role}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/account/profile" class="btn btn-secondary"><i class="bi bi-box-arrow-left"></i> Go
+                            back</a>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle"></i> Apply the
+                            change</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

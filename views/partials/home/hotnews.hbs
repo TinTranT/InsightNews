@@ -1,0 +1,231 @@
+<style>
+    .carousel-controls {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        /* Adjust the gap as needed */
+    }
+
+    .buttonPrev,.buttonNext {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        color: var(--color-red);
+    }
+    
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 5%;
+        background: none;
+    }
+
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'%23000\' viewBox=\'0 0 8 8\'%3E%3Cpath d=\'M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z\'/%3E%3C/svg%3E') !important;
+    }
+
+    .carousel-control-next-icon {
+        background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'%23000\' viewBox=\'0 0 8 8\'%3E%3Cpath d=\'M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z\'/%3E%3C/svg%3E') !important;
+    }
+
+    .hotnews .box-head .inner-title {
+        color: var(--color-red);
+        font-weight: 700;
+        font-size: 24px;
+    }
+
+    .hotnews .box-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .hotnews .box-head::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(to right, var(--color-red) 15%, var(--color-gray) 15%);
+    }
+
+    .hotnews .card-body {
+        height: 250px;
+    }
+
+    .hotnews .premium {
+        color: #87743D;
+        font-weight: bold;
+        font-size: 0.9em;
+        margin-right: 10px;
+    }
+
+    .hotnew-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+</style>
+<div class="hotnews my-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="box-head">
+                    <h5 class="inner-title">Hot News</h5>
+                    <div class="">
+                        <button class="buttonPrev" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="prev">
+                            <i class="bi bi-caret-left-fill"></i>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="buttonNext" type="button" data-bs-target="#carouselExampleIndicators"
+                            data-bs-slide="next">
+                            <i class="bi bi-caret-right-fill"></i>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="carouselExampleIndicators" class="carousel slide">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row d-flex justify-content-center">
+                        {{#each hotNews}}
+                        {{#if (and (st @index 0) (en @index 3))}}
+                        <div class="col-md-3">
+                            <a class="content" href="/news/details?id={{NewsID}}">
+                                <div class="card">
+                                    <img src="/static/imgs/{{Thumbnail}}" class="card-img-top hotnew-img"
+                                        alt="Img Dead">
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="height:50px; overflow:hidden;">{{truncate Title
+                                            60}}</h5>
+                                        <p class="card-text">{{truncate Abstract 80}}</p>
+                                        <div class="my-2">
+                                            <p class="card-text">{{#if (isEqual PremiumFlag 1)}}
+                                                <span class="premium">PREMIUM</span>
+                                                {{/if}}{{formatDate PublishDate}}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-primary mb-3">{{CatName}}</span>
+                                        </div>
+
+                                        {{!-- <ul class="nav nav-pills d-inline-flex text-center">
+                                            {{#each Tags}}
+                                            <li class="nav-item mb-3">
+                                                <div class="d-flex py-2 bg-light rounded-pill active me-2">
+                                                    <span class="text-dark" style="width: 100px;">{{this}}</span>
+                                                </div>
+                                            </li>
+                                            {{/each}}
+                                        </ul> --}}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center">
+                        {{#each hotNews}}
+                        {{#if (and (st @index 4) (en @index 7))}}
+                        <div class="col-md-3">
+                            <a class="content" href="/news/details?id={{NewsID}}">
+                                <div class="card">
+                                    <img src="/static/imgs/{{Thumbnail}}" class="card-img-top hotnew-img"
+                                        alt="Img Dead">
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="height:50px; overflow:hidden;">{{truncate Title
+                                            60}}</h5>
+                                        <p class="card-text">{{truncate Abstract 80}}</p>
+                                        <div class="my-2">
+                                            <p class="card-text">{{#if (isEqual PremiumFlag 1)}}
+                                                <span class="premium">PREMIUM</span>
+                                                {{/if}}{{formatDate PublishDate}}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-primary mb-3">{{CatName}}</span>
+                                        </div>
+
+                                        {{!-- <ul class="nav nav-pills d-inline-flex text-center">
+                                            {{#each Tags}}
+                                            <li class="nav-item mb-3">
+                                                <div class="d-flex py-2 bg-light rounded-pill active me-2">
+                                                    <span class="text-dark" style="width: 100px;">{{this}}</span>
+                                                </div>
+                                            </li>
+                                            {{/each}}
+
+                                        </ul> --}}
+
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row d-flex justify-content-center">
+                        {{#each hotNews}}
+                        {{#if (and (st @index 8) (en @index 11))}}
+                        <div class="col-md-3">
+                            <a class="content" href="/news/details?id={{NewsID}}">
+                                <div class="card">
+                                    <img src="/static/imgs/{{Thumbnail}}" class="card-img-top hotnew-img"
+                                        alt="Img Dead">
+                                    <div class="card-body">
+                                        <h5 class="card-title" style="height:50px; overflow:hidden;">{{truncate Title
+                                            60}}</h5>
+                                        <p class="card-text">{{truncate Abstract 80}}</p>
+                                        <div class="my-2">
+                                            <p class="card-text">{{#if (isEqual PremiumFlag 1)}}
+                                                <span class="premium">PREMIUM</span>
+                                                {{/if}}{{formatDate PublishDate}}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-primary mb-3">{{CatName}}</span>
+                                        </div>
+
+                                        {{!-- <ul class="nav nav-pills d-inline-flex text-center">
+                                            {{#each Tags}}
+                                            <li class="nav-item mb-3">
+                                                <div class="d-flex py-2 bg-light rounded-pill active me-2">
+                                                    <span class="text-dark" style="width: 100px;">{{this}}</span>
+                                                </div>
+                                            </li>
+                                            {{/each}}
+
+                                        </ul> --}}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

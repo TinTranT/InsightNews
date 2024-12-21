@@ -1,0 +1,68 @@
+<style>
+    .btn {
+        font-weight: 600;
+        transition: .5s;
+    }
+
+    .btn-square {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: normal;
+    }
+
+    .link-hover {
+        transition: 0.5s;
+    }
+
+    .link-hover:hover {
+        color: var(--color-red) !important;
+    }
+
+    .img-zoomin {
+        transition: 0.5s;
+    }
+
+    .img-zoomin:hover {
+        transform: scale(1.1);
+    }
+</style>
+{{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script>
+    document.getElementById('download-pdf').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Generating file PDF...',
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        });
+        var element = document.querySelector('.newscontent'); // Chọn phần tử chứa nội dung cần chuyển đổi
+        html2pdf(element, {
+            margin: 1,
+            filename: 'news-detail.pdf',
+            image: { type: 'jpeg', quality: 1.00 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        }).then(() => {
+            Swal.close(); // Tắt SweetAlert sau khi PDF đã được tải
+        });
+    }, { once: true }); // Đảm bảo sự kiện chỉ được gán một lần
+</script>
+{{/section}}
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                {{> newsdetail/newscontent}}
+                {{> newsdetail/comment}}
+            </div>
+            <div class="col-lg-4">
+                {{> newsdetail/recommendation}}
+            </div>
+        </div>
+    </div>
+</div>

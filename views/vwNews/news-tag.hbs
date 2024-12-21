@@ -1,0 +1,132 @@
+<style>
+    .catnews .card-title {
+        font-weight: bold;
+        font-size: 1.5em;
+    }
+
+    .catnews .card-body {
+        max-height: 300px;
+        /* Adjust the height as needed */
+    }
+    .article {
+        position: relative;
+        padding: 32px 0;
+        border-bottom: 1px dotted var(--color-gray);
+    }
+
+    .tagName {
+        font-weight: bold;
+        font-size: 2em;
+        color: var(--color-black);
+        border-left: 5px solid var(--color-red);
+        padding-left: 8px;
+    }
+
+    .article {
+        position: relative;
+    }
+
+    .container-link {
+        display: block; 
+    }
+
+    .container-link::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    .container-link.card-title {
+        transition: color 0.5s ease;
+    }
+    .container-link.card-title:hover {
+        color: var(--color-red);
+    }
+    .image-container {
+        padding-left: 0;
+    }
+    .premium {
+        color: #87743D;
+        font-weight: bold;
+        font-size: 0.9em;
+        margin-right: 10px;
+    }
+    .activeRed{
+        background-color: var(--color-red) !important;
+        border-color: var(--color-red) !important;
+    }
+    .notActiveRed{
+        color: var(--color-red) !important;
+    }
+</style>
+<div class="catnews">
+    <div class="row">
+        <div class="col-12">
+            <div class="top">
+                <h3 class="md-3 tagName">
+                    Tag: {{this.tag.TagName}}
+                </h3>
+            </div>
+        </div>
+    </div>
+    {{#if this.empty}}
+    <div class="container">
+        <p>Không có dữ liệu</p>
+    </div>
+    {{else}}
+    <div class="container">
+
+        {{#each this.news}}
+        <div class="article row my-3">
+            <div class="col-md-3 image-container">
+                <div class="card-body">
+                    <img src="/static/imgs/{{Thumbnail}}" class="img-fluid" alt="{{Title}}" style="width: 350px; height: 250px;">
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="card-body">
+                    <p class="card-text">
+                        {{#if (isEqual PremiumFlag 1)}}<span class="premium">PREMIUM</span> {{/if}}
+                        <i class="bi bi-clock"></i> {{timeAgo PublishDate}}
+                    </p>
+                    <a class="container-link card-title" href="/news/details?id={{NewsID}}">{{Title}}</a>
+                    <p class="card-text">{{Abstract}}</p>
+                    
+                </div>
+            </div>
+        </div>
+        {{/each}}
+
+
+        <nav aria-label="..." class="mt-5">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {{#if this.isFirstPage}}disabled{{/if}}">
+                    <a class="page-link {{#ifNot this.isFirstPage}} notActiveRed {{/ifNot}}"
+                        href="{{#unless this.isFirstPage}}/news/byTag?id={{this.tagId}}&page={{this.previousPage}}{{/unless}}">
+                        Previous
+                    </a>
+                </li>
+                {{#each this.page_items}}
+                {{#if isActive}}
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link activeRed" href="#">{{value}}</a>
+                </li>
+                {{else}}
+                <li class="page-item">
+                    <a class="page-link notActiveRed" href="/news/byTag?id={{../tagId}}&page={{value}}">
+                        {{value}}
+                    </a>
+                </li>
+                {{/if}}
+                {{/each}}
+                <li class="page-item {{#if this.isLastPage}}disabled{{/if}}">
+                    <a class="page-link {{#ifNot this.isLastPage}} notActiveRed {{/ifNot}}"
+                        href="{{#unless this.isLastPage}}/news/byTag?id={{this.tagId}}&page={{this.nextPage}}{{/unless}}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    {{/if}}
+</div>

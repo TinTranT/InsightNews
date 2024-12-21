@@ -1,0 +1,43 @@
+{{#section 'css'}}
+<style>
+    .bg-primary, .text-bg-primary {
+        background-color: var(--color-red) !important;
+        border-color: var(--color-red);
+    }
+</style>
+{{/section}}
+{{#section 'js'}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const message = document.getElementById('err_message').value;
+        if (message !== "") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+            });
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const message = document.getElementById('success_message').value;
+        if (message !== "") {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: message,
+            });
+        }
+    });
+</script>
+{{/section}}
+
+<div class="homepage">
+    <input type="text" id="success_message" value="{{ success_message }}" hidden>
+    <input type="text" id="err_message" value="{{ err_message }}" hidden>
+    {{> home/featurednews}}
+    {{> home/hotnews}}
+    {{> home/latestnews}}
+    {{> home/hotcategories}}
+</div>

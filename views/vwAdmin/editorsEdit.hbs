@@ -1,0 +1,203 @@
+{{#section 'css'}}
+<style>
+    .table td {
+        padding: 1.5rem 0.75rem;
+    }
+
+    .table td.col-4 {
+        padding-left: 3rem;
+    }
+
+    input[readonly] {
+        background-color: #e9ecef;
+        opacity: 0.7;
+        pointer-events: none;
+    }
+</style>
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
+{{/section}}
+{{#section 'js'}}
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
+<script>
+    new MultiSelectTag('assignCategories')  
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButton = document.querySelector('#deleteButton');
+        const saveButton = document.querySelector('#saveButton');
+        deleteButton.addEventListener('click', async function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: "Do you to permanently delete this user?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                reverseButtons: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const frmEdit = document.querySelector('#frmEdit');
+                    frmEdit.action = '/admin/editors/del';
+                    frmEdit.submit();
+                }
+            });
+        });
+
+        saveButton.addEventListener('click', async function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: "Do you want to continue?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                reverseButtons: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const frmEdit = document.querySelector('#frmEdit');
+                    frmEdit.action = '/admin/editors/edit';
+                    frmEdit.submit();
+                }
+            });
+        });
+
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var dobInput = document.getElementById('userDOB');
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        var yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;
+        if (dobInput.value === "1899-11-30" || !dobInput.value) {
+            dobInput.value = today;
+        }
+        dobInput.setAttribute('max', today);
+    });
+</script>
+{{/section}}
+<div class="main">
+    <form action="" method="post" id="frmEdit">
+        <main class="content px-3 py-4">
+            <div class="container-fluid">
+                <div class="mb-3">
+                    <div class="row">
+                        <h3 class="fw-bold fs-4 my-3">Edit Editors profile</h3>
+                    </div>
+                    <div class="info">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td class="col-4">
+                                        <label for="txtID" class="form-label">Id</label>
+                                    </td>
+                                    <td class="col-8">
+                                        <input type="text" class="form-control" id="userID" name="txtID"
+                                            value="{{this.editor.Id}}" placeholder="" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-4">
+                                        <label for="txtName" class="form-label">Name</label>
+                                    </td>
+                                    <td class="col-8">
+                                        <input type="text" class="form-control" id="userName" name="txtName"
+                                            value="{{this.editor.Name}}" placeholder="">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-4">
+                                        <label for="txtPenName" class="form-label">Pen Name</label>
+                                    </td>
+                                    <td class="col-8">
+                                        <input type="text" class="form-control" id="userPenName" name="txtPenName"
+                                            value="{{this.editor.PenName}}" placeholder="">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-4">
+                                        <label for="txtEmail" class="form-label">Email</label>
+                                    </td>
+                                    <td class="col-8">
+                                        <input type="text" class="form-control" id="userEmail" name="txtEmail"
+                                            value="{{this.editor.Email}}" placeholder="">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-4">
+                                        <label for="txtDOB" class="form-label">Date of birth</label>
+                                    </td>
+                                    <td class="col-8">
+                                        <input type="date" class="form-control" id="userDOB" name="txtDOB"
+                                            value="{{formatDate3 this.editor.Dob}}" placeholder="">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <h3 class="fw-bold fs-4 my-3">Others</h3>
+                    </div>
+                    <div class="info">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td class="col-4">
+                                        <label for="categoryParent" class="form-label">Change Role</label>
+                                    </td>
+                                    <td class="col-8">
+                                        <select class="form-select" id="readerRole" name="txtRole">
+                                            <option value="1">{{nameRole 1}}</option>
+                                            <option value="2">{{nameRole 2}}</option>
+                                            <option selected value="3">{{nameRole 3}}</option>
+                                            <option value="4">{{nameRole 4}}</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-4">
+                                        <label for="categoryParent" class="form-label">Assign categories</label>
+                                    </td>
+                                    <td class="col-8">
+                                        <select class="form-select" id="assignCategories" name="txtCategories" multiple>
+                                            {{#each this.categories}}
+                                            <option value="{{CatID}}" {{#if (isInArrayCat ../editorCat this.CatID)}}selected{{/if}}>{{CatParentName}} > {{CatName}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary me-2" id="saveButton">
+                                <i class="bi bi-floppy"></i>
+                                Save
+                            </button>
+                            <button type="click" class="btn btn-danger me-2" id="deleteButton"
+                                formaction="/admin/editors/del">
+                                <i class="bi bi-trash"></i>
+                                Delete
+                            </button>
+                            <a href="/admin/editors" class="btn btn-secondary">
+                                <i class="bi bi-arrow-bar-left"></i>
+                                Go Back
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </form>
+
+</div>
